@@ -1,5 +1,6 @@
 import { Fingerprint, ArrowRight, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
+import { signUp } from '../actions';
 
 export default function Signup() {
   return (
@@ -20,7 +21,7 @@ export default function Signup() {
         </div>
 
         <div className="bg-neutral-900/50 backdrop-blur-xl border border-neutral-800/60 rounded-2xl p-6 shadow-2xl">
-          <form action="/api/auth/signup" method="POST" className="space-y-4">
+          <form action={signUp} className="space-y-4">
             
             <div className="space-y-1">
               <label htmlFor="name" className="text-xs font-medium text-neutral-400 pl-1">Full Name</label>

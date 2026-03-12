@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { LogOut } from 'lucide-react';
+import { signOut } from '@/app/auth/actions';
 
 const nav = [
   { href: '/', label: 'Overview', icon: '◈' },
@@ -34,7 +35,7 @@ export function Sidebar() {
         ))}
       </nav>
       <div style={{ marginTop: 'auto' }}>
-        <form action="/api/auth/logout" method="post">
+        <form action={signOut}>
           <button 
             type="submit"
             className="w-full flex items-center gap-3 px-6 py-3 text-sm text-neutral-400 hover:text-white hover:bg-neutral-800/50 transition-colors"

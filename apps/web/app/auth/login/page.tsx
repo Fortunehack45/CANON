@@ -1,5 +1,6 @@
 import { Github, Fingerprint, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { signIn } from '../actions';
 
 export default function Login() {
   return (
@@ -20,7 +21,7 @@ export default function Login() {
         </div>
 
         <div className="bg-neutral-900/50 backdrop-blur-xl border border-neutral-800/60 rounded-2xl p-6 shadow-2xl">
-          <form action="/api/auth/login" method="POST" className="space-y-4">
+          <form action={signIn} className="space-y-4">
             <div className="space-y-1">
               <label htmlFor="email" className="text-xs font-medium text-neutral-400 pl-1">Email</label>
               <input 
