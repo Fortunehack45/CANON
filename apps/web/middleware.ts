@@ -64,18 +64,20 @@ export async function middleware(request: NextRequest) {
 
   try {
     const { data: { user } } = await supabase.auth.getUser();
+    console.log('Middleware auth check - User:', user ? user.email : 'None', 'Path:', request.nextUrl.pathname);
 
     // Protect all routes inside /(dashboard)
-    // If the user is NOT logged in and trying to access a protected route, redirect to /auth/login
     const isAuthPage = request.nextUrl.pathname.startsWith('/auth');
     const isApiPage = request.nextUrl.pathname.startsWith('/api');
     
     if (!user && !isAuthPage && !isApiPage) {
+      console.log('Middleware: No user, redirecting to /auth/login');
       return NextResponse.redirect(new URL('/auth/login', request.url));
     }
 
     // If the user IS logged in and trying to access the login/signup page, redirect to the dashboard
     if (user && isAuthPage) {
+      console.log('Middleware: User logged in, redirecting from auth page to /');
       return NextResponse.redirect(new URL('/', request.url));
     }
   } catch (e) {
