@@ -18,7 +18,7 @@ export async function writeAuditLog(params: AuditParams): Promise<void> {
       actorId: params.actorId,
       action: params.action,
       targetId: params.targetId,
-      metadata: params.metadata ?? {},
+      metadata: (params.metadata ?? {}) as any,
       ipAddress: params.ipAddress,
     },
   });
