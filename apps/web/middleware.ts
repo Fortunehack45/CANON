@@ -8,9 +8,17 @@ export async function middleware(request: NextRequest) {
     },
   });
 
+  const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+  if (!supabaseUrl || !supabaseAnonKey) {
+    console.error('Supabase middleware error: Missing environment variables');
+    return response;
+  }
+
   const supabase = createServerClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    supabaseUrl,
+    supabaseAnonKey,
     {
       cookies: {
         get(name: string) {
@@ -54,18 +62,24 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  const { data: { user } } = await supabase.auth.getUser();
+  try {
+    const { data: { user } } = await supabase.auth.getUser();
 
-  // Protect all routes inside /(dashboard)
-  // If the user is NOT logged in and trying to access a protected route, redirect to /auth/login
-  if (!user && !request.nextUrl.pathname.startsWith('/auth') && !request.nextUrl.pathname.startsWith('/api')) {
-    // Check if it's the root path or something inside the dashboard
-    return NextResponse.redirect(new URL('/auth/login', request.url));
-  }
+    // Protect all routes inside /(dashboard)
+    // If the user is NOT logged in and trying to access a protected route, redirect to /auth/login
+    const isAuthPage = request.nextUrl.pathname.startsWith('/auth');
+    const isApiPage = request.nextUrl.pathname.startsWith('/api');
+    
+    if (!user && !isAuthPage && !isApiPage) {
+      return NextResponse.redirect(new URL('/auth/login', request.url));
+    }
 
-  // If the user IS logged in and trying to access the login/signup page, redirect to the dashboard
-  if (user && request.nextUrl.pathname.startsWith('/auth')) {
-    return NextResponse.redirect(new URL('/', request.url));
+    // If the user IS logged in and trying to access the login/signup page, redirect to the dashboard
+    if (user && isAuthPage) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+  } catch (e) {
+    console.error('Supabase middleware auth error:', e);
   }
 
   return response;
