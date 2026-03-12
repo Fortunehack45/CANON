@@ -19,21 +19,19 @@ export default function SettingsPage() {
            </div>
            
            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* GitHub */}
-              <div className="group flex items-center justify-between p-5 bg-surface-1 border border-border rounded-premium transition-all hover:border-accent/30 shadow-sm">
-                 <div className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-surface-2 flex items-center justify-center rounded-xl border border-border text-foreground transition-colors group-hover:text-accent group-hover:bg-accent/5">
-                      <Github className="w-6 h-6" />
-                    </div>
-                    <div>
-                      <div className="font-bold text-foreground">GitHub</div>
-                      <div className="text-xs text-foreground-dim font-medium leading-tight">Sync technical PRs to intelligence</div>
-                    </div>
-                 </div>
-                 <button className="px-4 py-2 bg-surface-2 hover:bg-surface-3 text-foreground-secondary hover:text-foreground text-xs font-bold uppercase tracking-widest rounded-subtle transition-all">
-                    Link
-                 </button>
-              </div>
+               {/* GitHub */}
+               <a href="/settings/github" className="group flex items-center justify-between p-5 bg-surface-1 border border-border rounded-premium transition-all hover:border-accent/30 shadow-sm hover:shadow-glow">
+                  <div className="flex items-center gap-4">
+                     <div className="w-12 h-12 bg-surface-2 flex items-center justify-center rounded-xl border border-border text-foreground transition-colors group-hover:text-accent group-hover:bg-accent/5">
+                       <Github className="w-6 h-6" />
+                     </div>
+                     <div>
+                       <div className="font-bold text-foreground group-hover:text-accent transition-colors">GitHub</div>
+                       <div className="text-xs text-foreground-dim font-medium leading-tight">Connect repos &amp; auto-capture PR decisions</div>
+                     </div>
+                  </div>
+                  <ArrowRight className="w-4 h-4 text-foreground-dim group-hover:text-accent group-hover:translate-x-0.5 transition-all" />
+               </a>
 
               {/* Slack */}
               <div className="group flex items-center justify-between p-5 bg-surface-1 border border-border rounded-premium transition-all hover:border-accent/30 shadow-sm">

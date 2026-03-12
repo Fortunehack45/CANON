@@ -8,9 +8,11 @@ import {
   Search, 
   Users, 
   Settings, 
-  LogOut 
+  LogOut,
+  Building2
 } from 'lucide-react';
 import { signOut } from '@/app/auth/actions';
+import { OrgSwitcher } from './org-switcher';
 
 const nav = [
   { href: '/', label: 'Overview', icon: BarChart3 },
@@ -21,13 +23,23 @@ const nav = [
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
 
-export function Sidebar() {
+interface SidebarProps {
+  currentOrg?: { id: string; name: string; slug: string } | null;
+  allOrgs?: { id: string; name: string; slug: string }[];
+}
+
+export function Sidebar({ currentOrg, allOrgs = [] }: SidebarProps) {
   const pathname = usePathname();
   return (
     <aside className="w-64 bg-background-secondary border-r border-border h-screen flex flex-shrink-0 flex-col py-6">
-      <div className="px-6 mb-8 flex items-center gap-3">
+      <div className="px-6 mb-6 flex items-center gap-3">
         <div className="w-8 h-8 rounded-lg bg-accent flex items-center justify-center font-bold text-white shadow-glow">⬡</div>
         <span className="text-lg font-bold tracking-tight text-foreground">Black Box</span>
+      </div>
+
+      {/* Org Switcher */}
+      <div className="px-3 mb-5">
+        <OrgSwitcher currentOrg={currentOrg ?? null} allOrgs={allOrgs} />
       </div>
       
       <div className="px-6 mb-2 text-[10px] uppercase tracking-widest text-foreground-muted font-bold">Navigation</div>
@@ -60,6 +72,17 @@ export function Sidebar() {
             </Link>
           );
         })}
+
+        {/* Orgs quick link */}
+        <div className="pt-3 border-t border-border/50 mt-3">
+          <Link
+            href="/orgs/new"
+            className="flex items-center gap-3 px-3 py-2.5 rounded-premium text-sm font-medium transition-all duration-300 group text-foreground-secondary hover:text-foreground hover:bg-surface-2 border border-transparent"
+          >
+            <Building2 className="w-4 h-4 opacity-70 group-hover:opacity-100 group-hover:scale-110 transition-all" />
+            Create Org
+          </Link>
+        </div>
       </nav>
 
       <div className="mt-auto px-3 pt-6 border-t border-border">
