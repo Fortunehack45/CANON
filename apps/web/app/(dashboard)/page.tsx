@@ -1,16 +1,37 @@
-// Dashboard landing page - CTO Overview
+// Dashboard landing page - CTO Overview (live data from Supabase)
+import { createClient } from '@supabase/supabase-js';
 import { StatCard } from '@/components/stat-card';
 import { DecisionCard } from '@/components/decision-card';
 import { HealthGauge } from '@/components/health-gauge';
 
-export default function CTOOverview() {
-  // Static mock data for MVP scaffold
-  const stats = {
-    total: 124,
-    confirmed: 89,
-    pending: 23,
-    rejected: 12
-  };
+// Server-side Supabase client (runs at request time in Next.js)
+function createServerClient() {
+  return createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+  );
+}
+
+export default async function CTOOverview() {
+  const supabase = createServerClient();
+
+  // Fetch counts per status
+  const { data: decisions } = await supabase
+    .from('decision_records')
+    .select('id, status, title, summary_one_liner, impact, decision_type, created_at');
+
+  const total = decisions?.length ?? 0;
+  const confirmed = decisions?.filter((d) => d.status === 'confirmed').length ?? 0;
+  const pending = decisions?.filter((d) => d.status === 'pending_review').length ?? 0;
+  const rejected = decisions?.filter((d) => d.status === 'rejected').length ?? 0;
+
+  // Health score based on confirmed ratio
+  const healthScore = total > 0 ? Math.round((confirmed / total) * 100) : 0;
+
+  // Most recent 3 decisions
+  const recent = (decisions ?? [])
+    .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+    .slice(0, 3);
 
   return (
     <div className="animate-in">
@@ -20,10 +41,10 @@ export default function CTOOverview() {
       </div>
 
       <div className="stat-grid">
-        <StatCard title="Total Decisions" value={stats.total} delta="+12 this week" />
-        <StatCard title="Confirmed" value={stats.confirmed} delta="+8 this week" type="success" />
-        <StatCard title="Pending Review" value={stats.pending} delta="Needs attention" type="warning" />
-        <HealthGauge score={85} label="Knowledge Health" />
+        <StatCard title="Total Decisions" value={total} delta={`${total} in database`} />
+        <StatCard title="Confirmed" value={confirmed} delta={`${confirmed} confirmed`} type="success" />
+        <StatCard title="Pending Review" value={pending} delta={pending > 0 ? 'Needs attention' : 'All clear'} type={pending > 0 ? 'warning' : 'success'} />
+        <HealthGauge score={healthScore} label="Knowledge Health" />
       </div>
 
       <div className="page-header" style={{ paddingTop: '1rem' }}>
@@ -31,30 +52,23 @@ export default function CTOOverview() {
       </div>
 
       <div className="decision-list" style={{ marginTop: '1.5rem' }}>
-        <DecisionCard 
-          id="rec_1"
-          title="Migrate to Upstash Redis for Queue Management"
-          summary="Replaced self-hosted Redis with Upstash for BullMQ jobs to reduce operational overhead."
-          impact="high"
-          type="infrastructure"
-          status="confirmed"
-        />
-        <DecisionCard 
-          id="rec_2"
-          title="Adopt Pinecone for Vector Search"
-          summary="Selected Pinecone over pgvector for dedicated semantic search capabilities at scale."
-          impact="high"
-          type="architecture"
-          status="pending_review"
-        />
-        <DecisionCard 
-          id="rec_3"
-          title="Use ULID for Primary Keys"
-          summary="Switched from UUIDv4 to ULID for lexicographically sortable IDs across all database tables."
-          impact="medium"
-          type="data_model"
-          status="confirmed"
-        />
+        {recent.length === 0 ? (
+          <p style={{ color: 'var(--muted)', textAlign: 'center', padding: '2rem' }}>
+            No decisions recorded yet.
+          </p>
+        ) : (
+          recent.map((d) => (
+            <DecisionCard
+              key={d.id}
+              id={d.id}
+              title={d.title}
+              summary={d.summary_one_liner ?? ''}
+              impact={d.impact as 'high' | 'medium' | 'low'}
+              type={d.decision_type}
+              status={d.status as 'confirmed' | 'pending_review' | 'rejected'}
+            />
+          ))
+        )}
       </div>
     </div>
   );
