@@ -1,67 +1,100 @@
+// Workspace Settings Page
+import { Github, Slack, Database } from 'lucide-react';
+
 export default function SettingsPage() {
   return (
-    <div className="animate-in">
-      <div className="page-header">
+    <div className="animate-in max-w-3xl pb-20">
+       <div className="page-header mb-8">
         <h1 className="page-title">Workspace Settings</h1>
-        <p className="page-subtitle">Manage organization and integrations</p>
+        <p className="page-subtitle">Manage integrations and organization preferences.</p>
       </div>
 
-      <div style={{ padding: '2rem', maxWidth: '800px', display: 'grid', gap: '2rem' }}>
+      <div className="space-y-8">
         
-        <div className="card">
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>Integrations</h3>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginBottom: '2rem' }}>Connect tools to automatically capture engineering decisions.</p>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border)' }}>
-              <div>
-                <h4 style={{ fontWeight: 600, color: 'var(--text-primary)' }}>GitHub App</h4>
-                <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>Capture decisions from pull requests.</p>
+        <section className="bg-neutral-900/40 border border-neutral-800 rounded-2xl p-6 sm:p-8">
+           <h2 className="text-xl font-medium text-white mb-6 border-b border-neutral-800/80 pb-4">Integrations</h2>
+           
+           <div className="space-y-4">
+              {/* GitHub */}
+              <div className="flex items-center justify-between p-4 border border-neutral-800 rounded-xl bg-neutral-900/60">
+                 <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-neutral-800 flex items-center justify-center rounded-lg border border-neutral-700 text-white">
+                      <Github className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <div className="font-medium text-white">GitHub</div>
+                      <div className="text-sm text-neutral-400">Sync PRs and commit SHAs to decisions</div>
+                    </div>
+                 </div>
+                 <button className="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-white border border-neutral-700 rounded-lg text-sm font-medium transition-colors">
+                    Connect
+                 </button>
               </div>
-              <button className="btn btn-ghost" style={{ color: 'var(--success)', borderColor: 'rgba(16,185,129,0.3)' }}>✓ Connected</button>
-            </div>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingBottom: '1.5rem', borderBottom: '1px solid var(--border)' }}>
-              <div>
-                <h4 style={{ fontWeight: 600, color: 'var(--text-primary)' }}>Slack Integration</h4>
-                <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>Send and receive confirmation nudges.</p>
+              {/* Slack */}
+              <div className="flex items-center justify-between p-4 border border-neutral-800 rounded-xl bg-neutral-900/60">
+                 <div className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-neutral-800 flex items-center justify-center rounded-lg border border-neutral-700 text-blue-400">
+                      <Slack className="w-6 h-6" />
+                    </div>
+                    <div>
+                      <div className="font-medium text-white">Slack</div>
+                      <div className="text-sm text-neutral-400">Auto-nudge reviewers for pending decisions</div>
+                    </div>
+                 </div>
+                 <button className="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-white border border-neutral-700 rounded-lg text-sm font-medium transition-colors">
+                    Connect
+                 </button>
               </div>
-              <button className="btn btn-primary">Connect Slack</button>
-            </div>
+           </div>
+        </section>
 
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-              <div>
-                <h4 style={{ fontWeight: 600, color: 'var(--text-primary)' }}>Jira Software</h4>
-                <p style={{ fontSize: '0.875rem', color: 'var(--text-secondary)', marginTop: '0.25rem' }}>Link PRs to Jira ticket context.</p>
+        <section className="bg-neutral-900/40 border border-neutral-800 rounded-2xl p-6 sm:p-8">
+           <h2 className="text-xl font-medium text-white mb-6 border-b border-neutral-800/80 pb-4">General Configuration</h2>
+           
+           <form className="space-y-6">
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-neutral-300">Organization Name</label>
+                <input 
+                  type="text" 
+                  defaultValue="Fortunehack45"
+                  className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                />
               </div>
-              <button className="btn btn-primary">Connect Jira</button>
-            </div>
-          </div>
-        </div>
 
-        <div className="card">
-          <h3 style={{ fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem', color: 'var(--text-primary)' }}>Confidence Thresholds</h3>
-          <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginBottom: '2rem' }}>Configure how AI extractions are handled based on confidence score.</p>
-          
-          <div style={{ padding: '1rem', background: 'var(--bg-primary)', borderRadius: '8px', border: '1px solid var(--border)' }}>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>Auto-Approve</span>
-              <span style={{ fontSize: '0.875rem', color: 'var(--accent)' }}>&gt;= 90%</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>Soft Nudge (DM)</span>
-              <span style={{ fontSize: '0.875rem', color: 'var(--warning)' }}>70% - 89%</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-              <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>Active Nudge (Channel)</span>
-              <span style={{ fontSize: '0.875rem', color: 'var(--high)' }}>50% - 69%</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-              <span style={{ fontSize: '0.875rem', fontWeight: 500 }}>Requires Review Queue</span>
-              <span style={{ fontSize: '0.875rem', color: 'var(--critical)' }}>&lt; 50%</span>
-            </div>
-          </div>
-        </div>
+              <div className="space-y-2">
+                <label className="text-sm font-medium text-neutral-300">Approval Policy</label>
+                <select 
+                  className="w-full bg-neutral-950 border border-neutral-800 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+                >
+                  <option value="1">1 Senior Engineer Approval Required</option>
+                  <option value="2">2 Approvals Required</option>
+                  <option value="0">No Approval Required (Log only)</option>
+                </select>
+              </div>
+
+              <div className="pt-4 flex justify-end">
+                 <button type="button" className="px-6 py-2.5 bg-white text-black rounded-lg text-sm font-medium hover:bg-neutral-200 transition-colors">
+                    Save Changes
+                 </button>
+              </div>
+           </form>
+        </section>
+
+        <section className="border border-red-900/50 bg-red-950/10 rounded-2xl p-6 sm:p-8">
+           <h2 className="text-xl font-medium text-red-500 mb-2">Danger Zone</h2>
+           <p className="text-sm text-neutral-400 mb-6">Irreversible actions for your workspace.</p>
+           
+           <div className="flex items-center justify-between p-4 border border-red-900/30 rounded-xl bg-red-950/20">
+              <div>
+                <div className="font-medium text-white">Delete Workspace</div>
+                <div className="text-sm text-neutral-500">Permanently delete all decision records and history.</div>
+              </div>
+              <button className="px-4 py-2 bg-red-500/10 hover:bg-red-500/20 text-red-500 border border-red-500/20 rounded-lg text-sm font-medium transition-colors">
+                Delete Workspace
+              </button>
+           </div>
+        </section>
 
       </div>
     </div>

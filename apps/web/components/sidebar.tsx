@@ -1,6 +1,7 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { LogOut } from 'lucide-react';
 
 const nav = [
   { href: '/', label: 'Overview', icon: '◈' },
@@ -32,10 +33,21 @@ export function Sidebar() {
           </Link>
         ))}
       </nav>
-      <div style={{ marginTop: 'auto', padding: '1rem 1.5rem' }}>
-        <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-          <span className="pulse" style={{ display: 'inline-block', width: 6, height: 6, background: 'var(--success)', borderRadius: '50%', marginRight: 6 }} />
-          API connected
+      <div style={{ marginTop: 'auto' }}>
+        <form action="/api/auth/logout" method="post">
+          <button 
+            type="submit"
+            className="w-full flex items-center gap-3 px-6 py-3 text-sm text-neutral-400 hover:text-white hover:bg-neutral-800/50 transition-colors"
+          >
+            <LogOut className="w-4 h-4" />
+            Sign Out
+          </button>
+        </form>
+        <div style={{ padding: '1rem 1.5rem', borderTop: '1px solid var(--border)' }}>
+          <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
+            <span className="pulse" style={{ display: 'inline-block', width: 6, height: 6, background: 'var(--success)', borderRadius: '50%', marginRight: 6 }} />
+            API connected
+          </div>
         </div>
       </div>
     </aside>
