@@ -25,69 +25,73 @@ export default async function SearchPage({
   }
 
   return (
-    <div className="animate-in max-w-4xl">
-       <div className="page-header mb-8">
-        <h1 className="page-title">Search Knowledge Base</h1>
-        <p className="page-subtitle">Find past technical decisions across your organization.</p>
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 p-8 space-y-10">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground mb-1">Knowledge Search</h1>
+        <p className="text-foreground-secondary">Retrieve past technical decisions and engineering intelligence.</p>
       </div>
 
-      <form className="relative mb-12">
-        <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
-          <SearchIcon className="h-5 w-5 text-neutral-500" />
+      <form className="relative group max-w-2xl">
+        <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
+          <SearchIcon className="h-5 w-5 text-foreground-dim group-focus-within:text-accent transition-colors" />
         </div>
         <input
           type="text"
           name="q"
           defaultValue={query}
-          className="block w-full pl-12 pr-4 py-4 border border-neutral-800 rounded-xl leading-5 bg-neutral-900/50 text-white placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500/50 sm:text-lg transition-all shadow-xl"
-          placeholder="Search for 'Redis', 'migration', 'database'..."
+          className="block w-full pl-14 pr-32 py-5 bg-surface-1 border border-border rounded-premium text-foreground placeholder-foreground-dim focus:outline-none focus:bg-surface-2 focus:border-accent/30 focus:shadow-glow transition-all sm:text-lg font-medium"
+          placeholder="Search vectors: 'Redis', 'migration', 'auth'..."
           autoFocus
         />
-        <div className="absolute inset-y-0 right-2 flex items-center">
-            <button type="submit" className="px-4 py-2 bg-neutral-800 hover:bg-neutral-700 text-white rounded-lg text-sm font-medium transition-colors">
-              Search
+        <div className="absolute inset-y-2 right-2 flex items-center">
+            <button type="submit" className="h-full px-6 bg-accent text-white rounded-subtle text-sm font-black uppercase tracking-widest hover:bg-accent-hover transition-all shadow-sm active:scale-95">
+              Execute
             </button>
         </div>
       </form>
 
       {query && (
-        <div className="mb-6">
-          <h2 className="text-sm font-medium text-neutral-400 uppercase tracking-wider">
-            {decisions?.length || 0} Results for '{query}'
+        <div>
+          <h2 className="text-[10px] font-black text-foreground-dim uppercase tracking-[0.2em]">
+            Found {decisions?.length || 0} intelligence records for "{query}"
           </h2>
+          <div className="h-px bg-border mt-4" />
         </div>
       )}
 
-      <div className="grid gap-4">
+      <div className="space-y-4">
         {!query ? (
-           <div className="p-16 text-center border border-dashed border-neutral-800 rounded-xl bg-neutral-900/10">
-              <SearchIcon className="w-8 h-8 text-neutral-600 mx-auto mb-4" />
-              <p className="text-neutral-500 text-sm max-w-sm mx-auto">
-                Type a keyword above to search through all recorded architecture and infrastructure decisions.
+           <div className="bg-surface-1 border border-dashed border-border rounded-premium p-20 text-center">
+              <div className="w-16 h-16 rounded-full bg-surface-2 flex items-center justify-center mx-auto mb-6 text-foreground-dim">
+                <SearchIcon className="w-8 h-8 opacity-40" />
+              </div>
+              <p className="text-foreground-muted text-sm max-w-sm mx-auto font-medium">
+                Enter technical keywords to traverse the workspace intelligence graph and find relevant decision history.
               </p>
            </div>
         ) : !decisions || decisions.length === 0 ? (
-          <div className="p-12 text-center border border-dashed border-neutral-800 rounded-xl">
-             <h3 className="text-lg font-medium text-white mb-2">No matches found</h3>
-             <p className="text-neutral-500 text-sm max-w-sm mx-auto">
-               We couldn't find anything matching your search. Try different keywords.
+          <div className="bg-surface-1 border border-dashed border-border rounded-premium p-20 text-center">
+             <h3 className="text-lg font-bold text-foreground mb-2">Null result</h3>
+             <p className="text-foreground-muted text-sm max-w-sm mx-auto">
+               No architectural records match your current query parameters. Try widening the search scope.
              </p>
           </div>
         ) : (
-          decisions.map(d => (
-            <DecisionCard
-              key={d.id}
-              id={d.id}
-              title={d.title}
-              summary={d.summary_one_liner ?? ''}
-              impact={d.impact as 'high' | 'medium' | 'low'}
-              type={d.decision_type}
-              status={d.status as 'confirmed' | 'pending_review' | 'rejected'}
-            />
-          ))
+          <div className="grid grid-cols-1 gap-4">
+            {decisions.map(d => (
+              <DecisionCard
+                key={d.id}
+                id={d.id}
+                title={d.title}
+                summary={d.summary_one_liner ?? ''}
+                impact={d.impact as 'high' | 'medium' | 'low' | 'critical'}
+                type={d.decision_type}
+                status={d.status as 'confirmed' | 'pending_review' | 'rejected'}
+              />
+            ))}
+          </div>
         )}
       </div>
-
     </div>
   );
 }

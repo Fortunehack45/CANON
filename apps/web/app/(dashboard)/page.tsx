@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase-server';
 import { StatCard } from '@/components/stat-card';
 import { DecisionCard } from '@/components/decision-card';
 import { HealthGauge } from '@/components/health-gauge';
+import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
@@ -28,41 +29,47 @@ export default async function CTOOverview() {
     .slice(0, 3);
 
   return (
-    <div className="animate-in">
-      <div className="page-header">
-        <h1 className="page-title">CTO Overview</h1>
-        <p className="page-subtitle">Real-time engineering knowledge intelligence</p>
+    <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 p-8 space-y-10">
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight text-foreground mb-1">CTO Overview</h1>
+        <p className="text-foreground-secondary">Real-time engineering knowledge intelligence</p>
       </div>
 
-      <div className="stat-grid">
-        <StatCard title="Total Decisions" value={total} delta={`${total} in database`} />
-        <StatCard title="Confirmed" value={confirmed} delta={`${confirmed} confirmed`} type="success" />
-        <StatCard title="Pending Review" value={pending} delta={pending > 0 ? 'Needs attention' : 'All clear'} type={pending > 0 ? 'warning' : 'success'} />
-        <HealthGauge score={healthScore} label="Knowledge Health" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <StatCard label="Total Decisions" value={total} delta={`${total} total`} />
+        <StatCard label="Confirmed" value={confirmed} delta={`${confirmed} confirmed`} trend="up" />
+        <StatCard label="Pending Review" value={pending} delta={pending > 0 ? 'Action required' : 'All clear'} trend={pending > 0 ? 'down' : 'up'} />
+        <HealthGauge score={healthScore} label="System Health" />
       </div>
 
-      <div className="page-header" style={{ paddingTop: '1rem' }}>
-        <h2 className="page-title" style={{ fontSize: '1.25rem' }}>Recent High-Impact Decisions</h2>
-      </div>
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-xl font-bold tracking-tight text-foreground">Recent High-Impact Decisions</h2>
+          <Link href="/decisions" className="text-sm font-medium text-accent hover:text-accent-hover transition-colors">
+            View all 
+          </Link>
+        </div>
 
-      <div className="decision-list" style={{ marginTop: '1.5rem' }}>
-        {recent.length === 0 ? (
-          <p style={{ color: 'var(--muted)', textAlign: 'center', padding: '2rem' }}>
-            No decisions recorded yet.
-          </p>
-        ) : (
-          recent.map((d) => (
-            <DecisionCard
-              key={d.id}
-              id={d.id}
-              title={d.title}
-              summary={d.summary_one_liner ?? ''}
-              impact={d.impact as 'high' | 'medium' | 'low'}
-              type={d.decision_type}
-              status={d.status as 'confirmed' | 'pending_review' | 'rejected'}
-            />
-          ))
-        )}
+        <div className="grid grid-cols-1 gap-4">
+          {recent.length === 0 ? (
+            <div className="bg-surface-1 border border-dashed border-border rounded-premium p-12 text-center">
+              <div className="text-3xl mb-4 opacity-20">⬡</div>
+              <p className="text-foreground-muted font-medium">No decisions recorded yet.</p>
+            </div>
+          ) : (
+            recent.map((d) => (
+              <DecisionCard
+                key={d.id}
+                id={d.id}
+                title={d.title}
+                summary={d.summary_one_liner ?? ''}
+                impact={d.impact as 'high' | 'medium' | 'low' | 'critical'}
+                type={d.decision_type}
+                status={d.status as 'confirmed' | 'pending_review' | 'rejected'}
+              />
+            ))
+          )}
+        </div>
       </div>
     </div>
   );

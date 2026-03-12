@@ -36,19 +36,16 @@ export function FilterBar({
   };
 
   return (
-    <div className="flex flex-col md:flex-row gap-4 mt-6 p-4 bg-neutral-900/40 border border-neutral-800/60 rounded-xl">
-      <div className="relative flex-1">
-        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-          <Search className="h-4 w-4 text-neutral-500" />
+    <div className="flex flex-col md:flex-row items-center gap-2 p-1">
+      <div className="relative flex-1 group">
+        <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
+          <Search className="h-4 w-4 text-foreground-muted group-focus-within:text-accent transition-colors" />
         </div>
         <input
           type="text"
-          className="block w-full pl-10 pr-3 py-2 border border-neutral-800 rounded-lg leading-5 bg-neutral-950 text-neutral-300 placeholder-neutral-500 focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-colors"
-          placeholder="Search decisions..."
+          className="block w-full pl-10 pr-4 py-2 bg-surface-1 border border-transparent rounded-subtle text-sm text-foreground placeholder-foreground-dim focus:outline-none focus:bg-surface-2 focus:border-accent/30 transition-all"
+          placeholder="Search engineering intelligence..."
           defaultValue={currentQuery || ''}
-          onChange={(e) => {
-             // Basic debounce could go here, for now trigger on blur or enter
-          }}
           onKeyDown={(e) => {
             if (e.key === 'Enter') handleFilter('query', e.currentTarget.value);
           }}
@@ -56,26 +53,27 @@ export function FilterBar({
         />
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex items-center gap-2">
         <select 
-          className="bg-neutral-950 border border-neutral-800 text-neutral-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2"
+          className="bg-surface-1 border border-transparent hover:bg-surface-2 text-foreground-secondary text-sm rounded-subtle px-3 py-2 cursor-pointer focus:outline-none focus:border-accent/30 transition-all outline-none"
           value={currentStatus || 'all'}
           onChange={(e) => handleFilter('status', e.target.value)}
           disabled={isPending}
         >
-          <option value="all">All Status</option>
-          <option value="pending_review">Pending Review</option>
+          <option value="all">Any Status</option>
+          <option value="pending_review">Pending</option>
           <option value="confirmed">Confirmed</option>
           <option value="rejected">Rejected</option>
         </select>
 
         <select 
-          className="bg-neutral-950 border border-neutral-800 text-neutral-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2"
+          className="bg-surface-1 border border-transparent hover:bg-surface-2 text-foreground-secondary text-sm rounded-subtle px-3 py-2 cursor-pointer focus:outline-none focus:border-accent/30 transition-all outline-none"
           value={currentImpact || 'all'}
           onChange={(e) => handleFilter('impact', e.target.value)}
           disabled={isPending}
         >
           <option value="all">All Impact</option>
+          <option value="critical">Critical</option>
           <option value="high">High</option>
           <option value="medium">Medium</option>
           <option value="low">Low</option>
