@@ -2,7 +2,7 @@ import { Fingerprint, ArrowRight, ShieldCheck } from 'lucide-react';
 import Link from 'next/link';
 import { signUp } from '../actions';
 
-export default function Signup() {
+export default function Signup({ searchParams }: { searchParams: { error?: string } }) {
   return (
     <div className="min-h-screen flex items-center justify-center bg-black/95 text-neutral-100 relative overflow-hidden">
       
@@ -21,6 +21,11 @@ export default function Signup() {
         </div>
 
         <div className="bg-neutral-900/50 backdrop-blur-xl border border-neutral-800/60 rounded-2xl p-6 shadow-2xl">
+          {searchParams.error && (
+            <div className="mb-6 p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-400 text-xs text-center">
+              {searchParams.error}
+            </div>
+          )}
           <form action={signUp} className="space-y-4">
             
             <div className="space-y-1">
