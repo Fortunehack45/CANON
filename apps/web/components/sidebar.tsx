@@ -1,16 +1,24 @@
 'use client';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LogOut } from 'lucide-react';
+import { 
+  BarChart3, 
+  Hexagon, 
+  ListChecks, 
+  Search, 
+  Users, 
+  Settings, 
+  LogOut 
+} from 'lucide-react';
 import { signOut } from '@/app/auth/actions';
 
 const nav = [
-  { href: '/', label: 'Overview', icon: '◈' },
-  { href: '/decisions', label: 'Decisions', icon: '⬡' },
-  { href: '/review', label: 'Review Queue', icon: '◎' },
-  { href: '/search', label: 'Search', icon: '⊙' },
-  { href: '/team', label: 'Team', icon: '◉' },
-  { href: '/settings', label: 'Settings', icon: '⊛' },
+  { href: '/', label: 'Overview', icon: BarChart3 },
+  { href: '/decisions', label: 'Decisions', icon: Hexagon },
+  { href: '/review', label: 'Review Queue', icon: ListChecks },
+  { href: '/search', label: 'Search', icon: Search },
+  { href: '/team', label: 'Team', icon: Users },
+  { href: '/settings', label: 'Settings', icon: Settings },
 ];
 
 export function Sidebar() {
@@ -27,22 +35,27 @@ export function Sidebar() {
       <nav className="flex-1 px-3 space-y-1">
         {nav.map((item) => {
           const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
+          const Icon = item.icon;
           return (
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-premium text-sm font-medium transition-all duration-200 group ${
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-premium text-sm font-medium transition-all duration-300 group ${
                 isActive 
-                  ? 'bg-accent-subtle text-accent shadow-sm' 
-                  : 'text-foreground-secondary hover:text-foreground hover:bg-surface-2'
+                  ? 'bg-accent/10 text-accent shadow-glow border border-accent/20' 
+                  : 'text-foreground-secondary hover:text-foreground hover:bg-surface-2 border border-transparent'
               }`}
             >
-              <span className={`transition-transform duration-200 ${isActive ? 'scale-110' : 'group-hover:scale-110 opacity-70 group-hover:opacity-100'}`}>
-                {item.icon}
-              </span>
+              <Icon 
+                className={`w-4 h-4 transition-all duration-300 ${
+                  isActive 
+                    ? 'scale-110' 
+                    : 'group-hover:scale-110 opacity-70 group-hover:opacity-100'
+                }`} 
+              />
               {item.label}
               {isActive && (
-                <div className="ml-auto w-1 h-1 rounded-full bg-accent animate-pulse" />
+                <div className="ml-auto w-1 h-3 rounded-full bg-accent animate-in fade-in zoom-in duration-500 shadow-[0_0_8px_var(--accent)]" />
               )}
             </Link>
           );

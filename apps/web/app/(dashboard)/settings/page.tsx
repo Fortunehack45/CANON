@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic';
 // Workspace Settings Page
-import { Github, Slack, Database } from 'lucide-react';
+import { Github, Slack, Database, ArrowRight } from 'lucide-react';
 
 export default function SettingsPage() {
   return (
@@ -83,31 +83,35 @@ export default function SettingsPage() {
                   </div>
                 </div>
 
-                <div className="flex justify-end border-t border-border pt-6">
-                   <button type="button" className="px-8 py-3 bg-accent text-white rounded-premium text-sm font-black uppercase tracking-widest hover:bg-accent-hover transition-all shadow-glow">
-                      Deploy Changes
+                <div className="flex justify-end border-t border-border pt-8">
+                   <button type="button" className="group relative overflow-hidden px-8 py-3 bg-accent text-white rounded-premium text-[10px] font-black uppercase tracking-widest hover:bg-accent-hover transition-all shadow-glow active:scale-95">
+                      <span className="relative z-10 flex items-center gap-2">
+                        Deploy Strategy <ArrowRight className="w-3 h-3 transition-transform group-hover:translate-x-1" />
+                      </span>
                    </button>
                 </div>
              </form>
            </div>
         </section>
 
-        <section className="bg-danger/5 border border-danger/20 rounded-premium p-8 space-y-6">
-           <div>
-             <h2 className="text-xl font-black text-danger mb-1">Destructive Maneuver</h2>
-             <p className="text-sm text-danger/60 font-medium">Irreversible deletion of entire engineering intelligence history.</p>
-           </div>
-           
-           <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-6 bg-danger/10 border border-danger/20 rounded-2xl">
-              <div>
-                <div className="font-bold text-white mb-0.5 whitespace-nowrap">Terminate Workspace</div>
-                <div className="text-xs text-danger/70 font-medium">This will wipe all decision records permanently.</div>
-              </div>
-              <button className="whitespace-nowrap px-6 py-2.5 bg-danger hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-premium transition-all active:scale-95 shadow-lg">
-                Confirm Destruction
-              </button>
-           </div>
-        </section>
+         <section className="bg-danger/5 border border-danger/20 rounded-premium p-8 space-y-8 relative overflow-hidden group">
+            <div className="absolute top-0 right-0 w-64 h-64 bg-danger/5 rounded-full blur-[100px] -mr-32 -mt-32 opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+            
+            <div className="relative z-10">
+              <h2 className="text-xl font-black text-danger mb-1 tracking-tight">Destructive Maneuver</h2>
+              <p className="text-sm text-danger/60 font-medium">Irreversible deletion of entire engineering intelligence history.</p>
+            </div>
+            
+            <div className="flex flex-col md:flex-row items-center justify-between gap-6 p-6 bg-danger/10 border border-danger/20 rounded-2xl relative z-10">
+               <div className="text-center md:text-left">
+                 <div className="font-bold text-white mb-0.5 tracking-tight">Terminate Workspace</div>
+                 <div className="text-xs text-danger/70 font-medium">This will wipe all decision records permanently.</div>
+               </div>
+               <button className="whitespace-nowrap px-8 py-3 bg-danger hover:bg-red-600 text-white text-[10px] font-black uppercase tracking-[0.2em] rounded-premium transition-all active:scale-95 shadow-lg hover:shadow-danger/20">
+                 Confirm Destruction
+               </button>
+            </div>
+         </section>
 
       </div>
     </div>

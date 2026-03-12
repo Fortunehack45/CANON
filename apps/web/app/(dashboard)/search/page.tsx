@@ -32,22 +32,23 @@ export default async function SearchPage({
       </div>
 
       <form className="relative group max-w-2xl">
-        <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none">
-          <SearchIcon className="h-5 w-5 text-foreground-dim group-focus-within:text-accent transition-colors" />
+        <div className="absolute inset-y-0 left-0 pl-5 flex items-center pointer-events-none z-20">
+          <SearchIcon className="h-5 w-5 text-foreground-dim group-focus-within:text-accent transition-all duration-300 group-focus-within:scale-110" />
         </div>
         <input
           type="text"
           name="q"
           defaultValue={query}
-          className="block w-full pl-14 pr-32 py-5 bg-surface-1 border border-border rounded-premium text-foreground placeholder-foreground-dim focus:outline-none focus:bg-surface-2 focus:border-accent/30 focus:shadow-glow transition-all sm:text-lg font-medium"
+          className="block w-full pl-14 pr-32 py-5 bg-surface-1 border border-border rounded-premium text-foreground placeholder-foreground-dim focus:outline-none focus:bg-surface-2 focus:border-accent/40 focus:shadow-glow transition-all sm:text-lg font-bold relative z-10"
           placeholder="Search vectors: 'Redis', 'migration', 'auth'..."
           autoFocus
         />
-        <div className="absolute inset-y-2 right-2 flex items-center">
-            <button type="submit" className="h-full px-6 bg-accent text-white rounded-subtle text-sm font-black uppercase tracking-widest hover:bg-accent-hover transition-all shadow-sm active:scale-95">
-              Execute
+        <div className="absolute inset-y-2 right-2 flex items-center z-20">
+            <button type="submit" className="h-full px-8 bg-accent text-white rounded-subtle text-[10px] font-black uppercase tracking-widest hover:bg-accent-hover transition-all shadow-glow active:scale-95">
+              Execute Intelligence Retrieval
             </button>
         </div>
+        <div className="absolute inset-0 bg-accent/5 rounded-premium blur-2xl opacity-0 group-focus-within:opacity-100 transition-opacity duration-500" />
       </form>
 
       {query && (

@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, BrainCircuit, User } from 'lucide-react';
 
 interface DecisionCardProps {
   id: string;
@@ -35,20 +35,39 @@ export function DecisionCard({ id, title, summary, impact, type, status }: Decis
           </p>
         </div>
         
-        <div className="flex items-center gap-3">
-          <span className={`px-2.5 py-1 rounded-subtle text-[10px] font-bold uppercase tracking-wide border ${
-            impact === 'critical' ? 'bg-red-500/10 text-red-400 border-red-500/20' :
-            impact === 'high' ? 'bg-orange-500/10 text-orange-400 border-orange-500/20' :
-            impact === 'medium' ? 'bg-yellow-500/10 text-yellow-500 border-yellow-500/20' :
-            'bg-green-500/10 text-green-400 border-green-500/20'
-          }`}>
-            {impact} impact
-          </span>
-          <span className="px-2.5 py-1 rounded-subtle bg-surface-2 border border-border text-[10px] font-bold uppercase tracking-wide text-foreground-muted">
-            {type.replace('_', ' ')}
-          </span>
-          <div className="ml-auto text-[10px] font-medium text-foreground-dim flex items-center gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity">
-            View Details <ArrowRight className="w-3 h-3" />
+        <div className="flex items-center gap-4">
+          <div className="flex items-center gap-3">
+            <span className={`px-2.5 py-1 rounded-subtle text-[10px] font-bold uppercase tracking-wide border ${
+              impact === 'critical' ? 'bg-red-500/15 text-red-400 border-red-500/30' :
+              impact === 'high' ? 'bg-orange-500/15 text-orange-400 border-orange-500/30' :
+              impact === 'medium' ? 'bg-yellow-500/15 text-yellow-500 border-yellow-500/30' :
+              'bg-green-500/15 text-green-400 border-green-500/30 shadow-[0_0_10px_rgba(34,197,94,0.1)]'
+            }`}>
+              {impact} impact
+            </span>
+            <span className="px-2.5 py-1 rounded-subtle bg-surface-2 border border-border text-[10px] font-bold uppercase tracking-wide text-foreground-muted group-hover:border-accent/30 transition-colors">
+              {type.replace('_', ' ')}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-2 text-[10px] font-medium text-foreground-dim">
+            <User className="w-3 h-3 opacity-50" />
+            <span>@author</span>
+          </div>
+
+          <div className="ml-auto flex items-center gap-4">
+             <div className="flex flex-col items-end gap-1">
+                <div className="flex items-center gap-1.5 text-[9px] font-bold uppercase tracking-widest text-foreground-muted">
+                   <BrainCircuit className="w-3 h-3 text-accent" />
+                   Confidence
+                </div>
+                <div className="w-20 h-1 bg-surface-3 rounded-full overflow-hidden border border-border/50">
+                   <div className="h-full bg-accent shadow-[0_0_8px_var(--accent)]" style={{ width: '85%' }} />
+                </div>
+             </div>
+             <div className="text-[10px] font-bold uppercase tracking-widest text-foreground-dim flex items-center gap-1.5 opacity-0 group-hover:opacity-100 group-hover:text-accent transform translate-x-1 group-hover:translate-x-0 transition-all duration-300">
+                Audit <ArrowRight className="w-3 h-3" />
+             </div>
           </div>
         </div>
       </div>

@@ -43,18 +43,23 @@ export default async function CTOOverview() {
       </div>
 
       <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-xl font-bold tracking-tight text-foreground">Recent High-Impact Decisions</h2>
-          <Link href="/decisions" className="text-sm font-medium text-accent hover:text-accent-hover transition-colors">
-            View all 
+        <div className="flex items-center justify-between px-2">
+          <div className="flex items-center gap-2">
+            <h2 className="text-xl font-bold tracking-tight text-foreground">Intelligence Feed</h2>
+            <div className="px-2 py-px bg-accent/10 border border-accent/20 rounded text-[10px] font-bold text-accent uppercase tracking-widest animate-pulse">Live</div>
+          </div>
+          <Link href="/decisions" className="text-[10px] font-black uppercase tracking-widest text-foreground-dim hover:text-accent transition-colors flex items-center gap-1.5 group">
+            Knowledge Base <span className="transform group-hover:translate-x-0.5 transition-transform">→</span>
           </Link>
         </div>
 
         <div className="grid grid-cols-1 gap-4">
           {recent.length === 0 ? (
-            <div className="bg-surface-1 border border-dashed border-border rounded-premium p-12 text-center">
-              <div className="text-3xl mb-4 opacity-20">⬡</div>
-              <p className="text-foreground-muted font-medium">No decisions recorded yet.</p>
+            <div className="bg-surface-1 border border-dashed border-border rounded-premium p-16 text-center shadow-inner">
+              <div className="w-16 h-16 bg-surface-2 rounded-full flex items-center justify-center mx-auto mb-4 border border-border/50">
+                <span className="text-2xl opacity-20">⬡</span>
+              </div>
+              <p className="text-sm text-foreground-muted font-medium max-w-xs mx-auto">Establishing baseline... No intelligence units documented for this cycle.</p>
             </div>
           ) : (
             recent.map((d) => (

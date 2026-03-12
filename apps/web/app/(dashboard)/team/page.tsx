@@ -23,11 +23,11 @@ export default async function TeamPage() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-         <div className="bg-surface-1 border border-border rounded-premium p-6 shadow-sm">
-            <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent mb-4">
+         <div className="bg-surface-1 border border-border rounded-premium p-6 shadow-sm hover:border-accent/30 transition-all duration-500 group">
+            <div className="w-10 h-10 rounded-xl bg-accent/10 border border-accent/20 flex items-center justify-center text-accent mb-4 group-hover:scale-110 transition-transform">
               <Users className="w-5 h-5" />
             </div>
-            <div className="text-3xl font-black text-foreground mb-1">{users?.length || 0}</div>
+            <div className="text-3xl font-black text-foreground mb-1 group-hover:text-accent transition-colors">{users?.length || 0}</div>
             <div className="text-[10px] font-bold uppercase tracking-widest text-foreground-muted">Active Intelligence units</div>
          </div>
          
