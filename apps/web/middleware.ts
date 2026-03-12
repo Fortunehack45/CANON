@@ -64,22 +64,31 @@ export async function middleware(request: NextRequest) {
 
   try {
     const { data: { user } } = await supabase.auth.getUser();
-    console.log('Middleware auth check - User:', user ? user.email : 'None', 'Path:', request.nextUrl.pathname);
-
-    // Protect all routes inside /(dashboard)
-    const isAuthPage = request.nextUrl.pathname.startsWith('/auth');
-    const isApiPage = request.nextUrl.pathname.startsWith('/api');
+    const pathname = request.nextUrl.pathname;
     
-    if (!user && !isAuthPage && !isApiPage) {
-      console.log('Middleware: No user, redirecting to /auth/login');
+    console.log('Middleware check:', { pathname, user: user?.email || 'none' });
+
+    // 1. If user is logged in and trying to access /auth, redirect to /
+    if (user && pathname.startsWith('/auth')) {
+      console.log('User logged in, redirecting from auth to /');
+      return NextResponse.redirect(new URL('/', request.url));
+    }
+
+    // 2. If user is NOT logged in and trying to access root or protected pages, redirect to /auth/login
+    // We explicitly list protected paths or patterns here
+    const isProtectedPath = 
+      pathname === '/' || 
+      pathname.startsWith('/decisions') || 
+      pathname.startsWith('/review') || 
+      pathname.startsWith('/search') || 
+      pathname.startsWith('/team') || 
+      pathname.startsWith('/settings');
+
+    if (!user && isProtectedPath) {
+      console.log('No user, redirecting to /auth/login from:', pathname);
       return NextResponse.redirect(new URL('/auth/login', request.url));
     }
 
-    // If the user IS logged in and trying to access the login/signup page, redirect to the dashboard
-    if (user && isAuthPage) {
-      console.log('Middleware: User logged in, redirecting from auth page to /');
-      return NextResponse.redirect(new URL('/', request.url));
-    }
   } catch (e) {
     console.error('Supabase middleware auth error:', e);
   }
@@ -94,7 +103,7 @@ export const config = {
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
+     * - public files (images, etc)
      */
     '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
