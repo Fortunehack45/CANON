@@ -26,8 +26,8 @@ analyticsRouter.get('/', async (req: Request, res: Response) => {
 
     res.json({
       totals: { total, confirmed, pending, rejected: total - confirmed - pending },
-      byType: Object.fromEntries(byType.map((r) => [r.decisionType, r._count])),
-      byImpact: Object.fromEntries(byImpact.map((r) => [r.impact, r._count])),
+      byType: Object.fromEntries(byType.map((r: any) => [r.decisionType, r._count])),
+      byImpact: Object.fromEntries(byImpact.map((r: any) => [r.impact, r._count])),
       recentDecisions,
     });
   } catch {
