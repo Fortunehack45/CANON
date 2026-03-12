@@ -1,5 +1,7 @@
 // Team Settings Page
 import { createClient } from '@/lib/supabase-server';
+
+export const dynamic = 'force-dynamic';
 import { Users, Mail, ShieldAlert } from 'lucide-react';
 
 export default async function TeamPage() {

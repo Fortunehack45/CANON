@@ -1,5 +1,7 @@
 // Review Queue
 import { createClient } from '@/lib/supabase-server';
+
+export const dynamic = 'force-dynamic';
 import { DecisionCard } from '@/components/decision-card';
 import { revalidatePath } from 'next/cache';
 

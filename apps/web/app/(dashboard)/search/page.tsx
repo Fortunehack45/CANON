@@ -1,5 +1,7 @@
 // Search Page
 import { createClient } from '@/lib/supabase-server';
+
+export const dynamic = 'force-dynamic';
 import { DecisionCard } from '@/components/decision-card';
 import { Search as SearchIcon } from 'lucide-react';
 

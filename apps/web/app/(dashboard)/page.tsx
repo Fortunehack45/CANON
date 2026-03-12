@@ -1,19 +1,13 @@
 // Dashboard landing page - CTO Overview (live data from Supabase)
-import { createClient } from '@supabase/supabase-js';
+import { createClient } from '@/lib/supabase-server';
 import { StatCard } from '@/components/stat-card';
 import { DecisionCard } from '@/components/decision-card';
 import { HealthGauge } from '@/components/health-gauge';
 
-// Server-side Supabase client (runs at request time in Next.js)
-function createServerClient() {
-  return createClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
-}
+export const dynamic = 'force-dynamic';
 
 export default async function CTOOverview() {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   // Fetch counts per status
   const { data: decisions } = await supabase

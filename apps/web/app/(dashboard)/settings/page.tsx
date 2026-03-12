@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 // Workspace Settings Page
 import { Github, Slack, Database } from 'lucide-react';
 

@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { createClient } from '@/lib/supabase-server';
 import { ArrowLeft, Clock, Activity, CheckCircle, XCircle } from 'lucide-react';
 import Link from 'next/link';
