@@ -18,7 +18,11 @@ export async function signIn(formData: FormData) {
 
     if (error) {
       console.error('SignIn Supabase error:', error.message);
-      return redirect(`/auth/login?error=${encodeURIComponent(error.message)}`);
+      let userMessage = error.message;
+      if (error.message.includes('rate limit')) {
+        userMessage = 'Login rate limit exceeded. Please wait a minute before trying again.';
+      }
+      return redirect(`/auth/login?error=${encodeURIComponent(userMessage)}`);
     }
 
     console.log('SignIn success, redirecting...');
@@ -52,7 +56,11 @@ export async function signUp(formData: FormData) {
 
     if (error) {
       console.error('SignUp Supabase error:', error.message);
-      return redirect(`/auth/signup?error=${encodeURIComponent(error.message)}`);
+      let userMessage = error.message;
+      if (error.message.includes('rate limit')) {
+        userMessage = 'Signup rate limit exceeded. Please wait a minute before trying again or use a different email.';
+      }
+      return redirect(`/auth/signup?error=${encodeURIComponent(userMessage)}`);
     }
 
     console.log('SignUp success, redirecting...');
