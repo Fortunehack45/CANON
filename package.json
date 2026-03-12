@@ -10,7 +10,8 @@
     "dev:api": "npm run dev --workspace=@blackbox/api",
     "dev:web": "npm run dev --workspace=@blackbox/web",
     "build": "npm run build --workspaces",
-    "test": "npm test --workspaces"
+    "test": "npm test --workspaces",
+    "postinstall": "npm run prisma:generate --workspace=@blackbox/api"
   },
   "devDependencies": {
     "typescript": "^5.3.3",
