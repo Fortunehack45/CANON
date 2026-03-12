@@ -6,6 +6,7 @@ import { logger } from '../lib/logger.js';
 
 export interface PostProcessOptions {
   orgId: string;
+  projectId?: string;
   extraction: ExtractionResult;
   ctx: AssembledContext;
   confidence: number;
@@ -13,7 +14,7 @@ export interface PostProcessOptions {
 }
 
 export async function postProcess(opts: PostProcessOptions): Promise<string> {
-  const { orgId, extraction, ctx, confidence, route } = opts;
+  const { orgId, projectId, extraction, ctx, confidence, route } = opts;
 
   const id = ulid();
   const status = route === 'auto_approve' ? 'confirmed' : 'pending_review';
@@ -22,6 +23,7 @@ export async function postProcess(opts: PostProcessOptions): Promise<string> {
     data: {
       id,
       orgId,
+      projectId,
       title: extraction.title,
       summaryOneLiner: extraction.summaryOneLiner,
       what: extraction.what,

@@ -22,9 +22,21 @@ export async function processPrJob(opts: ProcessPrOptions): Promise<void> {
 
   logger.info({ prNumber, repo }, 'Starting PR processing job');
 
-  // Lookup orgId from the repo mapping (first org with the right GitHub login)
+  // Lookup orgId and projectId from the repo mapping
   let orgId = opts.orgId;
-  if (!orgId) {
+  let projectId: string | undefined;
+
+  const project = await prisma.project.findFirst({
+    where: {
+      githubRepoOwner: repo.split('/')[0],
+      githubRepoName: repo.split('/')[1]
+    }
+  });
+
+  if (project) {
+    projectId = project.id;
+    orgId = project.orgId;
+  } else if (!orgId) {
     const repoOwner = repo.split('/')[0];
     const org = await prisma.organization.findFirst({ where: { githubOrgLogin: repoOwner } });
     orgId = org?.id;
@@ -53,9 +65,9 @@ export async function processPrJob(opts: ProcessPrOptions): Promise<void> {
     const confidence = scoreConfidence(extraction, ctx);
     const route = routeByConfidence(confidence);
 
-    const recordId = await postProcess({ orgId, extraction, ctx, confidence, route });
+    const recordId = await postProcess({ orgId, projectId, extraction, ctx, confidence, route });
 
-    logger.info({ prNumber, recordId, route, confidence }, 'PR processing complete');
+    logger.info({ prNumber, recordId, projectId, route, confidence }, 'PR processing complete');
   } catch (err) {
     logger.error({ err, prNumber }, 'PR processing failed');
   }

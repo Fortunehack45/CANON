@@ -5,6 +5,8 @@ import { notFound } from 'next/navigation';
 import { DecisionCard } from '@/components/decision-card';
 import Link from 'next/link';
 import { Activity, Folder, Settings, Plus, ArrowLeft } from 'lucide-react';
+import { ProjectRoleSelector } from '@/components/project-role-selector';
+import { updateProjectRole } from './actions';
 
 interface Props {
   params: { slug: string; projectSlug: string };
@@ -44,6 +46,19 @@ export default async function ProjectDashboardPage({ params }: Props) {
     .select('id', { count: 'exact', head: true })
     .eq('project_id', project.id);
 
+  const { data: { user } } = await supabase.auth.getUser();
+  const { data: member } = await supabase
+    .from('project_members')
+    .select('custom_role_name')
+    .eq('project_id', project.id)
+    .eq('user_id', user?.id)
+    .single();
+
+  const handleRoleUpdate = async (role: string) => {
+    'use server';
+    await updateProjectRole(project.id, role);
+  };
+
   return (
     <div className="animate-in fade-in slide-in-from-bottom-4 duration-500 p-8 space-y-10">
       {/* Breadcrumb */}
@@ -61,17 +76,32 @@ export default async function ProjectDashboardPage({ params }: Props) {
           <div className="w-14 h-14 bg-accent/10 border border-accent/20 rounded-xl flex items-center justify-center text-accent">
             <Folder className="w-7 h-7" />
           </div>
-          <div>
+          <div className="space-y-1">
             <h1 className="text-3xl font-black tracking-tight text-foreground">{project.name}</h1>
-            <p className="text-foreground-secondary text-sm">{project.description || 'Project intelligence feed'}</p>
+            <div className="flex items-center gap-4">
+              <p className="text-foreground-secondary text-sm">{project.description || 'Project intelligence feed'}</p>
+              <ProjectRoleSelector 
+                projectId={project.id} 
+                currentRole={member?.custom_role_name} 
+                onUpdate={handleRoleUpdate} 
+              />
+            </div>
           </div>
         </div>
-        <Link
-          href={`/decisions/new?project_id=${project.id}`}
-          className="flex items-center gap-2 px-5 py-2.5 bg-accent text-white font-black text-[10px] uppercase tracking-widest rounded-premium shadow-glow hover:bg-accent-hover transition-all"
-        >
-          <Plus className="w-4 h-4" /> Log Decision
-        </Link>
+        <div className="flex items-center gap-3">
+          <Link
+            href={`/orgs/${params.slug}/projects/${params.projectSlug}/settings`}
+            className="flex items-center justify-center w-10 h-10 border border-border rounded-premium text-foreground-dim hover:text-accent hover:border-accent/40 transition-all"
+          >
+            <Settings className="w-5 h-5" />
+          </Link>
+          <Link
+            href={`/decisions/new?project_id=${project.id}`}
+            className="flex items-center gap-2 px-5 py-2.5 bg-accent text-white font-black text-[10px] uppercase tracking-widest rounded-premium shadow-glow hover:bg-accent-hover transition-all"
+          >
+            <Plus className="w-4 h-4" /> Log Decision
+          </Link>
+        </div>
       </div>
 
       {/* Stats */}

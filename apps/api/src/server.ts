@@ -15,6 +15,7 @@ import { settingsRouter } from './api/settings.js';
 import { reviewRouter } from './api/review.js';
 import { githubWebhookRouter } from './api/webhooks/github.js';
 import { slackWebhookRouter } from './api/webhooks/slack.js';
+import { mcpRouter } from './api/mcp.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -44,6 +45,7 @@ app.use('/api/settings', settingsRouter);
 app.use('/api/review', reviewRouter);
 app.use('/webhooks/github', githubWebhookRouter);
 app.use('/webhooks/slack', slackWebhookRouter);
+app.use('/api/v1/mcp', mcpRouter);
 
 // Global error handler
 app.use((err: Error, req: express.Request, res: express.Response, _next: express.NextFunction) => {

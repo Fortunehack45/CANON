@@ -9,7 +9,8 @@ import {
   Users, 
   Settings, 
   LogOut,
-  Building2
+  Building2,
+  UserCircle
 } from 'lucide-react';
 import { signOut } from '@/app/auth/actions';
 import { OrgSwitcher } from './org-switcher';
@@ -19,6 +20,7 @@ const nav = [
   { href: '/decisions', label: 'Decisions', icon: Hexagon },
   { href: '/review', label: 'Review Queue', icon: ListChecks },
   { href: '/search', label: 'Search', icon: Search },
+  { href: '/profile', label: 'Profile', icon: Users },
   { href: '/team', label: 'Team', icon: Users },
   { href: '/settings', label: 'Settings', icon: Settings },
 ];
@@ -52,22 +54,25 @@ export function Sidebar({ currentOrg, allOrgs = [] }: SidebarProps) {
             <Link
               key={item.href}
               href={item.href}
-              className={`flex items-center gap-3 px-3 py-2.5 rounded-premium text-sm font-medium transition-all duration-300 group ${
+              className={`flex items-center gap-3 px-3 py-2.5 rounded-premium text-sm font-medium transition-all duration-500 group relative overflow-hidden ${
                 isActive 
-                  ? 'bg-accent/10 text-accent shadow-glow border border-accent/20' 
-                  : 'text-foreground-secondary hover:text-foreground hover:bg-surface-2 border border-transparent'
+                  ? 'bg-accent/10 text-accent shadow-accent border border-accent/20 translate-x-1' 
+                  : 'text-foreground-ghost hover:text-foreground hover:bg-surface-2 border border-transparent'
               }`}
             >
+              {isActive && (
+                <div className="absolute inset-0 bg-gradient-to-r from-accent/5 to-transparent animate-pulse" />
+              )}
               <Icon 
-                className={`w-4 h-4 transition-all duration-300 ${
+                className={`w-4 h-4 transition-all duration-500 ${
                   isActive 
-                    ? 'scale-110' 
+                    ? 'scale-110 text-accent' 
                     : 'group-hover:scale-110 opacity-70 group-hover:opacity-100'
                 }`} 
               />
-              {item.label}
+              <span className="relative z-10">{item.label}</span>
               {isActive && (
-                <div className="ml-auto w-1 h-3 rounded-full bg-accent animate-in fade-in zoom-in duration-500 shadow-[0_0_8px_var(--accent)]" />
+                <div className="ml-auto w-1 h-3 rounded-full bg-accent animate-in fade-in zoom-in duration-700 shadow-[0_0_12px_var(--accent)]" />
               )}
             </Link>
           );

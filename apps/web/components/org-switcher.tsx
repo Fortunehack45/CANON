@@ -22,23 +22,23 @@ export function OrgSwitcher({ currentOrg, allOrgs }: OrgSwitcherProps) {
     <div className="relative">
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center gap-3 px-3 py-2.5 rounded-subtle hover:bg-surface-2 transition-all group"
+        className="w-full flex items-center gap-3 px-4 py-3 rounded-xl bg-surface-1 border border-border/50 hover:border-accent/30 hover:bg-surface-2 transition-all group shadow-sm"
       >
         {/* Org Avatar */}
-        <div className="w-7 h-7 rounded-lg bg-accent flex items-center justify-center text-white font-black text-[11px] flex-shrink-0 shadow-glow">
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-accent to-accent-secondary flex items-center justify-center text-white font-black text-xs flex-shrink-0 shadow-accent group-hover:scale-105 transition-transform">
           {currentOrg ? currentOrg.name.charAt(0).toUpperCase() : '?'}
         </div>
 
         <div className="flex-1 text-left min-w-0">
-          <div className="text-[11px] font-black text-foreground truncate leading-tight">
+          <div className="text-xs font-black text-foreground truncate leading-tight tracking-tight">
             {currentOrg?.name ?? 'No Organization'}
           </div>
-          <div className="text-[9px] font-bold text-foreground-dim uppercase tracking-widest">
-            {currentOrg ? 'Organization' : 'Create org to start'}
+          <div className="text-[8px] font-black text-foreground-ghost uppercase tracking-[0.2em] mt-0.5">
+            {currentOrg ? 'Network' : 'Initialize'}
           </div>
         </div>
 
-        <ChevronDown className={`w-3 h-3 text-foreground-dim flex-shrink-0 transition-transform duration-200 ${open ? 'rotate-180' : ''}`} />
+        <ChevronDown className={`w-3.5 h-3.5 text-foreground-ghost group-hover:text-accent transition-all duration-300 ${open ? 'rotate-180 text-accent' : ''}`} />
       </button>
 
       {/* Dropdown */}
