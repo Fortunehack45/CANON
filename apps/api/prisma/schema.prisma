@@ -1,0 +1,104 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model Organization {
+  id                    String    @id
+  name                  String
+  githubInstallationId  String?   @unique
+  githubOrgLogin        String?
+  slackTeamId           String?   @unique
+  slackBotToken         String?   // encrypted
+  jiraSiteUrl           String?
+  jiraEmail             String?
+  jiraToken             String?   // encrypted
+  settings              Json      @default("{}")
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  users                 User[]
+  decisionRecords       DecisionRecord[]
+  @@map("organizations")
+}
+
+model User {
+  id              String    @id
+  orgId           String
+  email           String
+  name            String?
+  githubLogin     String?
+  githubUserId    Int?
+  slackUserId     String?
+  avatarUrl       String?
+  role            String    @default("engineer")
+  lastSeenAt      DateTime?
+  deletedAt       DateTime?
+  createdAt       DateTime  @default(now())
+  org             Organization @relation(fields: [orgId], references: [id])
+  @@map("users")
+}
+
+model DecisionRecord {
+  id                      String    @id
+  orgId                   String
+  title                   String
+  summaryOneLiner         String?
+  what                    String?
+  why                     String?
+  alternativesConsidered  String[]  @default([])
+  tradeoffs               String?
+  outcome                 String?
+  decisionType            String    @default("architecture")
+  impact                  String    @default("medium")
+  tags                    String[]  @default([])
+  confidence              Float     @default(0)
+  aiModel                 String?
+  dataSources             String[]  @default([])
+  status                  String    @default("pending_review")
+  authorGithubLogin       String?
+  confirmedByUserId       String?
+  confirmedAt             DateTime?
+  editHistory             Json      @default("[]")
+  linkedPrNumber          Int?
+  linkedRepo              String?
+  linkedCommitSha         String?
+  linkedTicketId          String?
+  linkedSlackThreadTs     String?
+  filesAffected           String[]  @default([])
+  supersedesId            String?
+  supersededById          String?
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+  org                     Organization @relation(fields: [orgId], references: [id])
+  @@map("decision_records")
+}
+
+model PendingNudge {
+  id               String    @id
+  orgId            String
+  recordId         String
+  slackUserId      String
+  slackMessageTs   String?
+  status           String    @default("sent")
+  expiresAt        DateTime
+  respondedAt      DateTime?
+  createdAt        DateTime  @default(now())
+  @@map("pending_nudges")
+}
+
+model AuditLog {
+  id         String    @id
+  orgId      String
+  actorId    String?
+  action     String
+  targetId   String?
+  metadata   Json      @default("{}")
+  ipAddress  String?
+  createdAt  DateTime  @default(now())
+  @@map("audit_logs")
+}

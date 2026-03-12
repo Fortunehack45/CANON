@@ -1,0 +1,14 @@
+'use client';
+import { usePathname } from 'next/navigation';
+import { Sidebar } from '@/components/sidebar';
+
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="app-shell">
+      <Sidebar />
+      <main className="main-content">
+        {children}
+      </main>
+    </div>
+  );
+}
