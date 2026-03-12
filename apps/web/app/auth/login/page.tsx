@@ -50,7 +50,6 @@ export default function Login() {
 
             <button 
               type="submit" 
-              formAction="/api/auth/login"
               className="w-full bg-white text-black hover:bg-neutral-200 font-medium text-sm rounded-lg px-4 py-3 transition-colors flex items-center justify-center gap-2 mt-2"
             >
               Sign In <ArrowRight className="w-4 h-4" />
